@@ -1,4 +1,4 @@
-package de.huddeldaddel.sudoku;
+package de.huddeldaddel.sudoku.game;
 
 import java.util.Arrays;
 
@@ -96,6 +96,37 @@ public class Field {
             last = section[index];
         }
         return true;
+    }
+
+    public String toString() {
+        final StringBuilder builder = new StringBuilder();
+        for(int r=0; r<9; r++) {
+            for(int i: getRow(r)) {
+                if(0 < builder.length())
+                    builder.append(",");
+                builder.append(i);
+            }
+        }
+        return builder.toString();
+    }
+
+    public String toAsciiArtString() {
+        final StringBuilder builder = new StringBuilder();
+        for(int r=0; r<9; r++) {
+            if(3 == r || 6 == r)
+                builder.append("\n------+-------+------");
+            if(0 < builder.length())
+                builder.append("\n");
+            final int[] row = getRow(r);
+            for(int c=0; c<9; c++) {
+                if(3 == c || 6 == c)
+                    builder.append(" |");
+                if(0 < c)
+                    builder.append(" ");
+                builder.append(row[c]);
+            }
+        }
+        return builder.toString();
     }
 
 }

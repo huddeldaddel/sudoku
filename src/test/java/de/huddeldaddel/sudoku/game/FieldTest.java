@@ -1,5 +1,6 @@
-package de.huddeldaddel.sudoku;
+package de.huddeldaddel.sudoku.game;
 
+import de.huddeldaddel.sudoku.game.Field;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FieldTest {
 
     @Test
-    public void testValidationAndCompletionOfCompletedValidGrid() {
+    public void testCompletedValidGrid() {
         final int[][] grid = {
                 {8, 3, 5, 4, 1, 6, 9, 2, 7},
                 {2, 9, 6, 8, 5, 7, 4, 3, 1},
@@ -25,7 +26,7 @@ public class FieldTest {
     }
 
     @Test
-    public void testValidationAndCompletionOfCompletedInvalidGrid() {
+    public void testCompletedInvalidGrid() {
         final int[][] grid = {
                 {1, 2, 3, 4, 5, 6, 7, 8, 9},
                 {9, 1, 2, 3, 4, 5, 6, 7, 8},
@@ -43,7 +44,7 @@ public class FieldTest {
     }
 
     @Test
-    public void testValidationAndCompletionOfIncompleteInvalidSubGrid() {
+    public void testIncompleteInvalidSubGrid() {
         final int[][] grid = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -61,7 +62,7 @@ public class FieldTest {
     }
 
     @Test
-    public void testValidationAndCompletionOfIncompleteValidSubGrid() {
+    public void testIncompleteValidSubGrid() {
         final int[][] grid = {
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
                 {0, 0, 0, 0, 0, 0, 0, 0, 0},
