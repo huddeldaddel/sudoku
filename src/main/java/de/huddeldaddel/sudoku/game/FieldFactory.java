@@ -1,7 +1,6 @@
 package de.huddeldaddel.sudoku.game;
 
 import org.springframework.stereotype.Component;
-import org.springframework.util.StopWatch;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +10,9 @@ import java.util.List;
 @Component
 public class FieldFactory {
 
-    public Field build() {
+    public Field generateCompletedField() {
         final Field field = new Field();
         fillField(field, NumberSequenceFactory.RANDOM, 0);
-        minimizeField(field);
         return field;
     }
 

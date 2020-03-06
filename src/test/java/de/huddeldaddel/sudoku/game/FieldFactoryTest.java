@@ -7,19 +7,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FieldFactoryTest {
 
     @Test
-    public void testBuild() {
+    public void testGenerateCompletedField() {
         final FieldFactory factory = new FieldFactory();
-        final Field field = factory.build();
+        final Field field = factory.generateCompletedField();
         System.out.println(field.toAsciiArtString());
-        assertFalse(field.isCompleted());
+        assertTrue(field.isCompleted());
         assertTrue(field.isValid());
     }
 
     @Test
-    public void testBuildAreUnique() {
+    public void testGenerateCompletedFieldsAreUnique() {
         final FieldFactory factory = new FieldFactory();
-        final Field field1 = factory.build();
-        final Field field2 = factory.build();
+        final Field field1 = factory.generateCompletedField();
+        final Field field2 = factory.generateCompletedField();
         assertNotEquals(field1.toString(), field2.toString());
     }
 
