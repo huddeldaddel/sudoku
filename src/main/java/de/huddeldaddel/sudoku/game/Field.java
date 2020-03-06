@@ -6,6 +6,9 @@ public class Field {
 
     private final int[][] grid;
 
+    /**
+     * Creates an empty Field.
+     */
     public Field() {
         grid = new int[9][9];
         for(int c=0; c<9; c++)
@@ -13,8 +16,22 @@ public class Field {
                 setCell(c,r,0);
     }
 
+    /**
+     * Creates a Field with pre-filled number grid. Useful for tests.
+     *
+     * @param grid the pre-filled grid.
+     */
     public Field(int[][] grid) {
         this.grid = grid;
+    }
+
+    /**
+     * Creates a clone of the given Field.
+     *
+     * @param original the original field to be cloned
+     */
+    public Field(Field original) {
+        this.grid = Arrays.stream(original.grid).map(int[]::clone).toArray(int[][]::new);
     }
 
     public int getCell(int column, int row) {
