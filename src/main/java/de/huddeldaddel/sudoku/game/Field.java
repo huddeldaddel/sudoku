@@ -1,6 +1,7 @@
 package de.huddeldaddel.sudoku.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 
@@ -34,6 +35,15 @@ public class Field {
      */
     public Field(Field original) {
         this.grid = Arrays.stream(original.grid).map(int[]::clone).toArray(int[][]::new);
+    }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    public Difficulty getDifficulty() {
+        int clues = 0;
+        for(int i=0; i<81; i++)
+            if(0 != getCell(i % 9, i / 9))
+                clues++;
+        return Difficulty.getDifficultyByNumberOfClues(clues);
     }
 
     public int[][] getGrid() {

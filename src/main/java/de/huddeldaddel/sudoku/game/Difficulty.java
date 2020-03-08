@@ -9,9 +9,17 @@ public enum Difficulty {
     public final int minimumNumberOfClues;
     public final int maximumNumberOfClues;
 
-    private Difficulty(int min, int max) {
+    Difficulty(int min, int max) {
         minimumNumberOfClues = min;
         maximumNumberOfClues = max;
+    }
+
+    public static Difficulty getDifficultyByNumberOfClues(int clues) {
+        if(clues >= Difficulty.EASY.minimumNumberOfClues)
+            return Difficulty.EASY;
+        if(clues <= Difficulty.HARD.maximumNumberOfClues)
+            return Difficulty.HARD;
+        return Difficulty.MEDIUM;
     }
 
 }
