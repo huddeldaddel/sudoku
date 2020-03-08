@@ -12,7 +12,7 @@ public class VerticalStripeMixFilter implements FieldFilter {
 
     @Override
     public Stream<Field> filter(Field field) {
-        final List<Field> result = new ArrayList<>();
+        final Stream.Builder<Field> result = Stream.builder();
         result.add(field);
         // result.add(getVerticalStripeMix(field, List.of(0,1,2))); is equal to the input field
         result.add(getVerticalStripeMix(field, List.of(0,2,1)));
@@ -20,7 +20,7 @@ public class VerticalStripeMixFilter implements FieldFilter {
         result.add(getVerticalStripeMix(field, List.of(1,2,0)));
         result.add(getVerticalStripeMix(field, List.of(2,0,1)));
         result.add(getVerticalStripeMix(field, List.of(2,1,0)));
-        return result.stream();
+        return result.build();
     }
 
     public static Field getVerticalStripeMix(Field field, List<Integer> stripeMix) {

@@ -18,9 +18,10 @@ public class FieldGeneratorTest {
     public void testGenerateFields() throws IOException {
         final Path tempDirectory = Files.createTempDirectory("FieldGeneratorTest-");
         assertEquals(0, tempDirectory.toFile().listFiles().length);
-        new FieldGenerator().generateFields(tempDirectory.toString());
 
+        new FieldGenerator().generateFields(tempDirectory.toString(), 1);
         final File[] generatedFiles = tempDirectory.toFile().listFiles((file, s) -> s.toLowerCase().endsWith(".json"));
+
         System.out.println("Generated files:");
         for(File f: generatedFiles)
             System.out.println(" -> " + f.getAbsolutePath());

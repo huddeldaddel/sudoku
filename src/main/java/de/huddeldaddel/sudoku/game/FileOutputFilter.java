@@ -17,7 +17,7 @@ public class FileOutputFilter implements FieldFilter {
 
     @Override
     public Stream<Field> filter(Field field) {
-        final File file = Path.of(outputDirectory, field.toString().replaceAll(",", "") + ".json").toFile();
+        final File file = Path.of(outputDirectory, field.getDifficulty().toString() + "-" + field.toString().replaceAll(",", "") + ".json").toFile();
         final ObjectMapper objectMapper = new ObjectMapper();
         try {
             objectMapper.writeValue(file, field);
