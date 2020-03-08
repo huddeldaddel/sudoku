@@ -1,10 +1,5 @@
 package de.huddeldaddel.sudoku.game;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,13 +8,13 @@ import java.util.stream.Stream;
 public class FieldGenerator {
 
     public void generateFields(String outputDirectory) {
+        final FileOutputFilter fileOutputFilter = new FileOutputFilter(outputDirectory);
         final long generatedFields = generateCompletedRandomFields(1)
                 .flatMap(RotationFilter::doFilter)
                 .flatMap(HorizontalStripeMixFilter::doFilter)
                 .flatMap(VerticalStripeMixFilter::doFilter)
-                .peek(f -> writeFile(f, outputDirectory))
+                .flatMap(fileOutputFilter::filter)
                 .count();
-
         System.out.println(generatedFields + " have been created");
     }
 
@@ -31,16 +26,6 @@ public class FieldGenerator {
             result.add(field);
         }
         return result.stream();
-    }
-
-    private void writeFile(Field field, String outputDirectory) {
-        final File file = Path.of(outputDirectory, field.toString().replaceAll(",", "") + ".json").toFile();
-        final ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            objectMapper.writeValue(file, field);
-        } catch (IOException e) {
-            System.out.println("oh shit");
-        }
     }
 
     /**
