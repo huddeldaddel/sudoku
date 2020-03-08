@@ -13,10 +13,14 @@ import java.util.stream.Stream;
 public class FieldGenerator {
 
     public void generateFields(String outputDirectory) {
-        generateCompletedRandomFields(1)
+        final long generatedFields = generateCompletedRandomFields(1)
                 .flatMap(RotationFilter::doFilter)
                 .flatMap(HorizontalStripeMixFilter::doFilter)
-                .forEach(f -> writeFile(f, outputDirectory));
+                .flatMap(VerticalStripeMixFilter::doFilter)
+                .peek(f -> writeFile(f, outputDirectory))
+                .count();
+
+        System.out.println(generatedFields + " have been created");
     }
 
     private Stream<Field> generateCompletedRandomFields(int count) {

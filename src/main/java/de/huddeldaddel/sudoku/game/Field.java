@@ -1,5 +1,7 @@
 package de.huddeldaddel.sudoku.game;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Arrays;
 
 public class Field {
@@ -34,6 +36,10 @@ public class Field {
         this.grid = Arrays.stream(original.grid).map(int[]::clone).toArray(int[][]::new);
     }
 
+    public int[][] getGrid() {
+        return Arrays.stream(grid).map(int[]::clone).toArray(int[][]::new);
+    }
+
     public int getCell(int column, int row) {
         return grid[row][column];
     }
@@ -44,6 +50,7 @@ public class Field {
         } else throw new IllegalArgumentException(value + " is out of range");
     }
 
+    @JsonIgnore
     public boolean isCompleted() {
         for(int c=0; c<9; c++)
             for(int r=0; r<9; r++)
@@ -52,6 +59,7 @@ public class Field {
         return isValid();
     }
 
+    @JsonIgnore
     public boolean isValid() {
         return areColumnsValid() &&
                 areRowValid() &&

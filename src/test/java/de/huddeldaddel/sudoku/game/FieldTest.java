@@ -1,7 +1,11 @@
 package de.huddeldaddel.sudoku.game;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.huddeldaddel.sudoku.game.Field;
 import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -77,6 +81,25 @@ public class FieldTest {
         final Field field = new Field(grid);
         assertTrue(field.isValid());
         assertFalse(field.isCompleted());
+    }
+
+    @Test
+    public void testJSONSerializationDeserialization() throws JsonProcessingException {
+        final Field inputField = new Field(new int[][] {
+                {9, 7, 5, 8, 3, 4, 2, 6, 1},
+                {4, 3, 2, 6, 5, 1, 9, 7, 8},
+                {1, 6, 8, 9, 7, 2, 4, 5, 3},
+                {5, 9, 6, 7, 2, 8, 1, 3, 4},
+                {8, 1, 4, 5, 6, 3, 7, 2, 9},
+                {7, 2, 3, 1, 4, 9, 5, 8, 6},
+                {3, 8, 1, 2, 9, 7, 6, 4, 5},
+                {6, 4, 7, 3, 1, 5, 8, 9, 2},
+                {2, 5, 9, 4, 8, 6, 3, 1, 7}
+        });
+        final ObjectMapper objectMapper = new ObjectMapper();
+        final String json = objectMapper.writeValueAsString(inputField);
+        final Field outputField = objectMapper.readValue(json, Field.class);
+        assertEquals(inputField.toString(), outputField.toString());
     }
 
 }
