@@ -65,7 +65,7 @@ public class Field {
         return true;
     }
 
-    private int[] getColumn(int column) {
+    public int[] getColumn(int column) {
         int[] section = new int[9];
         for(int row=0; row<9; row++) {
             section[row] = getCell(column, row);
@@ -80,7 +80,7 @@ public class Field {
         return true;
     }
 
-    private int[] getRow(int row) {
+    public int[] getRow(int row) {
         return Arrays.copyOf(grid[row], 9);
     }
 

@@ -13,8 +13,9 @@ import java.util.stream.Stream;
 public class FieldGenerator {
 
     public void generateFields(String outputDirectory) {
+        final RotationFilter rotationFilter = new RotationFilter();
         generateCompletedRandomFields(1)
-                // .flatMap(this::getRotations);
+                .flatMap(rotationFilter::filter)
                 .forEach(f -> writeFile(f, outputDirectory));
     }
 
@@ -26,10 +27,6 @@ public class FieldGenerator {
             result.add(field);
         }
         return result.stream();
-    }
-
-    private Stream<Field> getRotations(Field field) {
-        return new ArrayList<Field>().stream();
     }
 
     private void writeFile(Field field, String outputDirectory) {
