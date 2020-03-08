@@ -6,6 +6,10 @@ import java.util.stream.Stream;
 
 public class RotationFilter implements FieldFilter {
 
+    public static Stream<Field> doFilter(Field field) {
+        return new RotationFilter().filter(field);
+    }
+
     @Override
     public Stream<Field> filter(Field field) {
         final List<Field> result = new ArrayList<>();

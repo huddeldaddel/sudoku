@@ -6,6 +6,10 @@ import java.util.stream.Stream;
 
 public class HorizontalStripeMixFilter implements FieldFilter {
 
+    public static Stream<Field> doFilter(Field field) {
+        return new HorizontalStripeMixFilter().filter(field);
+    }
+
     @Override
     public Stream<Field> filter(Field field) {
         final List<Field> result = new ArrayList<>();
