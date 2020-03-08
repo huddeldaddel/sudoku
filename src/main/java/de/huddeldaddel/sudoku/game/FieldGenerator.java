@@ -14,8 +14,10 @@ public class FieldGenerator {
 
     public void generateFields(String outputDirectory) {
         final RotationFilter rotationFilter = new RotationFilter();
+        final HorizontalStripeMixFilter horizontalStripeMixFilter = new HorizontalStripeMixFilter();
         generateCompletedRandomFields(1)
                 .flatMap(rotationFilter::filter)
+                .flatMap(horizontalStripeMixFilter::filter)
                 .forEach(f -> writeFile(f, outputDirectory));
     }
 
