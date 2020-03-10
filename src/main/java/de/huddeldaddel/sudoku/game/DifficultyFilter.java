@@ -16,7 +16,7 @@ public class DifficultyFilter implements FieldFilter {
         final Map<Difficulty, List<Field>> result = buildWeightedResultStructure();
 
         final List<Integer> indexSequence = generateRandomAccessSequence();
-        Field reducedField = null;
+        Field reducedField;
         for(Integer index: indexSequence) {
             long start = System.currentTimeMillis();
             reducedField = removeClue(field, index);
@@ -62,7 +62,6 @@ public class DifficultyFilter implements FieldFilter {
      */
     private static Field removeClue(Field field, int index) {
         try {
-            System.out.println("Removing clue from index " + index + ".");
             final StopWatch stopWatch = new StopWatch();
             stopWatch.start();
 
@@ -76,17 +75,9 @@ public class DifficultyFilter implements FieldFilter {
             final Thread descThread = new Thread(new RunnableSolver(descClone, NumberSequenceFactory.DESCENDING));
             descThread.start();
 
-            ascThread.join(60 *1000);
-            descThread.join(60 *1000);
+            ascThread.join();
+            descThread.join();
             stopWatch.stop();
-
-            if(ascThread.isAlive() || descThread.isAlive()) {
-                System.out.println("The process didn't finish in it's limit of 60 seconds. Interrupting computation...");
-                ascThread.interrupt();
-                descThread.interrupt();
-            }
-
-            System.out.println("This took " + (stopWatch.getLastTaskTimeMillis() / 1000) + " seconds");
 
             if(ascClone.toString().equals(descClone.toString())) {
                 final Field result = new Field(field);
