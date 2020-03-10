@@ -4,23 +4,29 @@ import java.util.stream.Stream;
 
 public class FieldGenerator {
 
-    public void generateFields(String outputDirectory, int count) {
-        final FileOutputFilter fileOutputFilter = new FileOutputFilter(outputDirectory);
-        final long generatedFields = Stream
-                .generate(FieldGenerator::generateCompletedRandomField)
+    public Stream<Field> generateFields(Field field) {
+        return Stream.of(field)
+                .flatMap(this::runFilterChain);
+    }
+
+    public Stream<Field> generateFields(int count) {
+        return Stream.generate(this::generateCompletedRandomField)
+                .peek(f -> System.out.println(f.toAsciiArtString()))
                 .limit(count)
+                .flatMap(this::runFilterChain);
+    }
+
+    private Stream<Field> runFilterChain(Field completedField) {
+        return Stream.of(completedField)
                 .flatMap(DifficultyFilter::doFilter)
                 .flatMap(RotationFilter::doFilter)
                 .flatMap(HorizontalStripeMixFilter::doFilter)
                 .flatMap(VerticalStripeMixFilter::doFilter)
                 .flatMap(ColumnMixFilter::doFilter)
-                .flatMap(RowMixFilter::doFilter)
-                .flatMap(fileOutputFilter::filter)
-                .count();
-        System.out.println(generatedFields + " have been created");
+                .flatMap(RowMixFilter::doFilter);
     }
 
-    private static Field generateCompletedRandomField() {
+    private Field generateCompletedRandomField() {
         final Field field = new Field();
         Solver.solve(field, NumberSequenceFactory.RANDOM, 0);
         return field;

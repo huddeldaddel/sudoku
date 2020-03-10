@@ -19,6 +19,9 @@ public class Solver {
         final List<Integer> numbers = sequenceFactory.build();
 
         for(int number: numbers) {
+            if(Thread.currentThread().isInterrupted())
+                return false;
+
             field.setCell(index % 9, index / 9, number);
             if(field.isValid() && (index < 80)) {
                 final int nextIndex = findNextBlankCell(field, index + 1);

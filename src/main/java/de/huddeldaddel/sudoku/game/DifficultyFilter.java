@@ -1,5 +1,7 @@
 package de.huddeldaddel.sudoku.game;
 
+import org.springframework.util.StopWatch;
+
 import java.util.*;
 import java.util.stream.Stream;
 
@@ -60,6 +62,10 @@ public class DifficultyFilter implements FieldFilter {
      */
     private static Field removeClue(Field field, int index) {
         try {
+            System.out.println("Removing clue from index " + index + ".");
+            final StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
+
             final Field ascClone = new Field(field);
             ascClone.setCell(index % 9, index / 9, 0);
             final Thread ascThread = new Thread(new RunnableSolver(ascClone, NumberSequenceFactory.ASCENDING));
@@ -70,10 +76,19 @@ public class DifficultyFilter implements FieldFilter {
             final Thread descThread = new Thread(new RunnableSolver(descClone, NumberSequenceFactory.DESCENDING));
             descThread.start();
 
-            ascThread.join();
-            descThread.join();
+            ascThread.join(60 *1000);
+            descThread.join(60 *1000);
+            stopWatch.stop();
 
-            if (ascClone.toString().equals(descClone.toString())) {
+            if(ascThread.isAlive() || descThread.isAlive()) {
+                System.out.println("The process didn't finish in it's limit of 60 seconds. Interrupting computation...");
+                ascThread.interrupt();
+                descThread.interrupt();
+            }
+
+            System.out.println("This took " + (stopWatch.getLastTaskTimeMillis() / 1000) + " seconds");
+
+            if(ascClone.toString().equals(descClone.toString())) {
                 final Field result = new Field(field);
                 result.setCell(index % 9, index / 9, 0);
                 return result;
