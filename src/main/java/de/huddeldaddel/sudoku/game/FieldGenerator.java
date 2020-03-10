@@ -13,6 +13,8 @@ public class FieldGenerator {
                 .flatMap(RotationFilter::doFilter)
                 .flatMap(HorizontalStripeMixFilter::doFilter)
                 .flatMap(VerticalStripeMixFilter::doFilter)
+                .flatMap(ColumnMixFilter::doFilter)
+                .flatMap(RowMixFilter::doFilter)
                 .flatMap(fileOutputFilter::filter)
                 .count();
         System.out.println(generatedFields + " have been created");

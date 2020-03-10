@@ -22,9 +22,6 @@ public class FieldGeneratorTest {
         new FieldGenerator().generateFields(tempDirectory.toString(), 1);
         final File[] generatedFiles = tempDirectory.toFile().listFiles((file, s) -> s.toLowerCase().endsWith(".json"));
 
-        System.out.println("Generated files:");
-        for(File f: generatedFiles)
-            System.out.println(" -> " + f.getAbsolutePath());
         assertNotEquals(0, generatedFiles.length);
 
         for(Path path : Files.walk(tempDirectory).sorted(Comparator.reverseOrder()).collect(Collectors.toList()))
