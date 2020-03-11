@@ -20,7 +20,7 @@ public class RotationFilter implements FieldFilter {
     }
 
     public static Field rotate90Degrees(Field field) {
-        final Field result = new Field();
+        final Field result = new Field(field);
         for(int r=0; r<9; r++) {
             final int[] row = field.getRow(r);
             for(int i=0; i<9; i++)

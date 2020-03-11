@@ -16,7 +16,7 @@ public class RowMixFilter implements FieldFilter {
     }
 
     public static Field getRowMix(Field field, List<Integer> rowMix) {
-        final Field result = new Field();
+        final Field result = new Field(field);
         for(int stripe=0; stripe<3; stripe++)
             for(int row=0; row<3; row++)
                 for(int col=0; col<9; col++)

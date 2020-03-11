@@ -1,7 +1,10 @@
 package de.huddeldaddel.sudoku.game;
 
+import org.springframework.stereotype.Component;
+
 import java.util.stream.Stream;
 
+@Component
 public class FieldGenerator {
 
     public Stream<Field> generateFields(Field field) {
@@ -11,7 +14,6 @@ public class FieldGenerator {
 
     public Stream<Field> generateFields(int count) {
         return Stream.generate(this::generateCompletedRandomField)
-                .peek(f -> System.out.println(f.toAsciiArtString()))
                 .limit(count)
                 .flatMap(this::runFilterChain);
     }
@@ -23,7 +25,8 @@ public class FieldGenerator {
                 .flatMap(HorizontalStripeMixFilter::doFilter)
                 .flatMap(VerticalStripeMixFilter::doFilter)
                 .flatMap(ColumnMixFilter::doFilter)
-                .flatMap(RowMixFilter::doFilter);
+                .flatMap(RowMixFilter::doFilter)
+                .flatMap(FinalizingFilter::doFilter);
     }
 
     private Field generateCompletedRandomField() {

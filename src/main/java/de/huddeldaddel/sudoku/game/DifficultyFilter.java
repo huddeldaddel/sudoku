@@ -14,7 +14,6 @@ public class DifficultyFilter implements FieldFilter {
     @Override
     public Stream<Field> filter(Field field) {
         final Map<Difficulty, List<Field>> result = buildWeightedResultStructure();
-
         final List<Integer> indexSequence = generateRandomAccessSequence();
         Field reducedField;
         for(Integer index: indexSequence) {
@@ -22,8 +21,10 @@ public class DifficultyFilter implements FieldFilter {
             reducedField = removeClue(field, index);
             if(null != reducedField) {
                 field = reducedField;
-                if((Difficulty.TOO_EASY != field.getDifficulty()) && (Difficulty.TOO_HARD != field.getDifficulty()))
-                    result.get(field.getDifficulty()).add(field);
+                final Difficulty difficulty = Difficulty.getDifficultyByNumberOfClues(field.getEmptyCellCount());
+                field.setDifficulty(difficulty.name());
+                if((Difficulty.TOO_EASY != difficulty) && (Difficulty.TOO_HARD != difficulty))
+                    result.get(difficulty).add(field);
             }
             long end = System.currentTimeMillis();
             if(45 < (end - start) / 1000)

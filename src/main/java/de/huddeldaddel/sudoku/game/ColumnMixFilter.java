@@ -15,7 +15,7 @@ public class ColumnMixFilter implements FieldFilter {
     }
 
     public static Field getColumnMix(Field field, List<Integer> colMix) {
-        final Field result = new Field();
+        final Field result = new Field(field);
         for(int stripe=0; stripe<3; stripe++)
             for(int col=0; col<3; col++)
                 for(int row=0; row<9; row++)

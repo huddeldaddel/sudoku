@@ -15,7 +15,7 @@ public class HorizontalStripeMixFilter implements FieldFilter {
     }
 
     public static Field getHorizontalStripeMix(Field field, List<Integer> stripeMix) {
-        final Field result = new Field();
+        final Field result = new Field(field);
         for(int stripe=0; stripe<3; stripe++) {
             int sourceRow=stripe*3;
             for(int row=stripeMix.get(stripe)*3; row<(stripeMix.get(stripe)*3)+3; row++, sourceRow++)

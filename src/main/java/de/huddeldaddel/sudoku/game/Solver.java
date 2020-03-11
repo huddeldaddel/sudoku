@@ -1,10 +1,7 @@
 package de.huddeldaddel.sudoku.game;
 
-import org.springframework.stereotype.Component;
-
 import java.util.List;
 
-@Component
 public class Solver {
 
     /**

@@ -15,7 +15,7 @@ public class VerticalStripeMixFilter implements FieldFilter {
     }
 
     public static Field getVerticalStripeMix(Field field, List<Integer> stripeMix) {
-        final Field result = new Field();
+        final Field result = new Field(field);
         for(int stripe=0; stripe<3; stripe++) {
             int sourceCol=stripe*3;
             for(int col=stripeMix.get(stripe)*3; col<(stripeMix.get(stripe)*3)+3; col++, sourceCol++)

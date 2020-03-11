@@ -1,13 +1,19 @@
 package de.huddeldaddel.sudoku.game;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.util.Arrays;
 
 public class Field {
 
+    @Id
+    private String id;
     private final int[][] grid;
+    private String difficulty;
+    @Indexed(unique = true)
+    private String identifier;
 
     /**
      * Creates an empty Field.
@@ -34,20 +40,10 @@ public class Field {
      * @param original the original field to be cloned
      */
     public Field(Field original) {
-        this.grid = Arrays.stream(original.grid).map(int[]::clone).toArray(int[][]::new);
-    }
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    public Difficulty getDifficulty() {
-        int clues = 0;
-        for(int i=0; i<81; i++)
-            if(0 != getCell(i % 9, i / 9))
-                clues++;
-        return Difficulty.getDifficultyByNumberOfClues(clues);
-    }
-
-    public int[][] getGrid() {
-        return Arrays.stream(grid).map(int[]::clone).toArray(int[][]::new);
+        difficulty = original.difficulty;
+        grid = Arrays.stream(original.grid).map(int[]::clone).toArray(int[][]::new);
+        id = original.id;
+        identifier = original.identifier;
     }
 
     public int getCell(int column, int row) {
@@ -62,11 +58,7 @@ public class Field {
 
     @JsonIgnore
     public boolean isCompleted() {
-        for(int c=0; c<9; c++)
-            for(int r=0; r<9; r++)
-                if(0 == getCell(c, r))
-                    return false;
-        return isValid();
+        return (0 == getEmptyCellCount()) && isValid();
     }
 
     @JsonIgnore
@@ -74,6 +66,24 @@ public class Field {
         return areColumnsValid() &&
                 areRowValid() &&
                 areSubGridsValid();
+    }
+
+    @JsonIgnore
+    public int getEmptyCellCount() {
+        int result = 0;
+        for(int c=0; c<9; c++)
+            for(int r=0; r<9; r++)
+                if(0 == getCell(c, r))
+                    result++;
+        return result;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     private boolean areColumnsValid() {
@@ -162,6 +172,14 @@ public class Field {
             }
         }
         return builder.toString();
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
 }
