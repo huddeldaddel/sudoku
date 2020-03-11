@@ -56,6 +56,10 @@ public class Field {
         } else throw new IllegalArgumentException(value + " is out of range");
     }
 
+    public int[][] getGrid() {
+        return Arrays.stream(grid).map(int[]::clone).toArray(int[][]::new);
+    }
+
     @JsonIgnore
     public boolean isCompleted() {
         return (0 == getEmptyCellCount()) && isValid();
