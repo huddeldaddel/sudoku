@@ -62,12 +62,12 @@ public class Field {
 
     @JsonIgnore
     public boolean isCompleted() {
-        return new FieldValidator(this).isCompleted();
+        return new FieldValidator(this.grid).isCompleted();
     }
 
     @JsonIgnore
     public boolean isValid() {
-        return new FieldValidator(this).isValid();
+        return new FieldValidator(this.grid).isValid();
     }
 
     @JsonIgnore
