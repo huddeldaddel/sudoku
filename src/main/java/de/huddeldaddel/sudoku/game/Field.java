@@ -62,14 +62,12 @@ public class Field {
 
     @JsonIgnore
     public boolean isCompleted() {
-        return (0 == getEmptyCellCount()) && isValid();
+        return new FieldValidator(this).isCompleted();
     }
 
     @JsonIgnore
     public boolean isValid() {
-        return areColumnsValid() &&
-                areRowValid() &&
-                areSubGridsValid();
+        return new FieldValidator(this).isValid();
     }
 
     @JsonIgnore
@@ -82,19 +80,20 @@ public class Field {
         return result;
     }
 
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
+    }
+
     public String getIdentifier() {
         return identifier;
     }
 
     void setIdentifier(String identifier) {
         this.identifier = identifier;
-    }
-
-    private boolean areColumnsValid() {
-        for(int column=0; column<9; column++)
-            if(!isSectionValid(getColumn(column)))
-                return false;
-        return true;
     }
 
     public int[] getColumn(int column) {
@@ -105,46 +104,8 @@ public class Field {
         return section;
     }
 
-    private boolean areRowValid() {
-        for(int row=0; row<9; row++)
-            if(!isSectionValid(getRow(row)))
-                return false;
-        return true;
-    }
-
     public int[] getRow(int row) {
         return Arrays.copyOf(grid[row], 9);
-    }
-
-    private boolean areSubGridsValid() {
-        for(int column=0; column<7; column+=3)
-            for(int row=0; row<7; row+=3)
-                if(!isSectionValid(getSubGrid(column, row)))
-                    return false;
-        return true;
-    }
-
-    private int[] getSubGrid(int leftColumn, int topRow) {
-        int[] section = new int[9];
-        int index = 0;
-        for(int column=leftColumn; column < leftColumn + 3; column++) {
-            for(int row=topRow; row < topRow + 3; row++) {
-                section[index] = getCell(column, row);
-                index++;
-            }
-        }
-        return section;
-    }
-
-    private boolean isSectionValid(int[] section) {
-        Arrays.sort(section);
-        int last = section[0];
-        for(int index = 1; index < 9; index++) {
-            if(section[index] > 0 && last == section[index])
-                return false;
-            last = section[index];
-        }
-        return true;
     }
 
     public String toString() {
@@ -176,14 +137,6 @@ public class Field {
             }
         }
         return builder.toString();
-    }
-
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
     }
 
 }
