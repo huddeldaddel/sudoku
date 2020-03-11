@@ -96,6 +96,18 @@ public class Field {
         this.identifier = identifier;
     }
 
+    public int[] getBlock(int leftColumn, int topRow) {
+        int[] section = new int[9];
+        int index = 0;
+        for(int column=leftColumn; column < leftColumn + 3; column++) {
+            for(int row=topRow; row < topRow + 3; row++) {
+                section[index] = getCell(column, row);
+                index++;
+            }
+        }
+        return section;
+    }
+
     public int[] getColumn(int column) {
         int[] section = new int[9];
         for(int row=0; row<9; row++) {

@@ -15,43 +15,31 @@ public class FieldValidator {
     }
 
     public boolean isValid() {
-        return areColumnsValid() &&
-                areRowValid() &&
-                areSubGridsValid();
+        return isFieldValidRegardingBlocks() &&
+                isFieldValidRegardingColumns() &&
+                isFieldValidRegardingRows();
     }
 
-    private boolean areColumnsValid() {
+    private boolean isFieldValidRegardingBlocks() {
+        for(int column=0; column<7; column+=3)
+            for(int row=0; row<7; row+=3)
+                if(!isSectionValid(field.getBlock(column, row)))
+                    return false;
+        return true;
+    }
+
+    private boolean isFieldValidRegardingColumns() {
         for(int column=0; column<9; column++)
             if(!isSectionValid(field.getColumn(column)))
                 return false;
         return true;
     }
 
-    private boolean areRowValid() {
+    private boolean isFieldValidRegardingRows() {
         for(int row=0; row<9; row++)
             if(!isSectionValid(field.getRow(row)))
                 return false;
         return true;
-    }
-
-    private boolean areSubGridsValid() {
-        for(int column=0; column<7; column+=3)
-            for(int row=0; row<7; row+=3)
-                if(!isSectionValid(getSubGrid(column, row)))
-                    return false;
-        return true;
-    }
-
-    private int[] getSubGrid(int leftColumn, int topRow) {
-        int[] section = new int[9];
-        int index = 0;
-        for(int column=leftColumn; column < leftColumn + 3; column++) {
-            for(int row=topRow; row < topRow + 3; row++) {
-                section[index] = field.getCell(column, row);
-                index++;
-            }
-        }
-        return section;
     }
 
     private boolean isSectionValid(int[] section) {
